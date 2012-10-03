@@ -1,6 +1,8 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
+using System.Web.Http.Controllers;
 
 namespace AttributeRouting.Web.Http
 {
@@ -8,7 +10,7 @@ namespace AttributeRouting.Web.Http
     /// The route information for an action.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-    public class HttpRouteAttribute : Attribute, IRouteAttribute
+    public class HttpRouteAttribute : Attribute, IRouteAttribute, IActionHttpMethodProvider
     {
         /// <summary>
         /// Specify the route information for an action.
@@ -38,7 +40,16 @@ namespace AttributeRouting.Web.Http
 
         public string RouteUrl { get; private set; }
 
-        public string[] HttpMethods { get; protected set; }
+        public string[] HttpMethods { get; private set; }
+
+        /// <summary>
+        /// Implementation of <see cref="IActionHttpMethodProvider"/>, 
+        /// which allows Web API to disambiguate this route by the HTTP methods.
+        /// </summary>
+        Collection<HttpMethod> IActionHttpMethodProvider.HttpMethods
+        {
+            get { return new Collection<HttpMethod>(HttpMethods.Select(m => new HttpMethod(m)).ToList()); }
+        }
 
         [Obsolete("Prefer ActionPrecedence for clarity of intent.")]
         public int Order
