@@ -5,7 +5,7 @@ namespace AttributeRouting.Tests.Web.Areas.Api.Controllers
 {
     [RouteArea("ApiLocalization", AreaUrl = "api/{culture}/Localization")]
     [RoutePrefix("Prefix")]
-    public class LocalizationController : ApiController
+    public class LocalizationController : BaseApiController
     {
         [GET("")]
         public string GetLocalized()

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Web.Http;
 using AttributeRouting.Web.Http;
 
 namespace AttributeRouting.Tests.Web.Areas.Api.Controllers
@@ -19,13 +20,13 @@ namespace AttributeRouting.Tests.Web.Areas.Api.Controllers
         }
 
         // POST /api/<controller>        
-        public string PostConvention(string value)
+        public string PostConvention([FromBody] string value)
         {
             return "POST {value} = " + value;
         }
 
         // PUT /api/<controller>/5
-        public string PutConvention(int id, string value)
+        public string PutConvention(int id, [FromBody] string value)
         {
             return "PUT {id} = " + id + ", {value} = " + value;
         }

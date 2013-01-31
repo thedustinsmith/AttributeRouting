@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using AttributeRouting.Web.Http;
 
 namespace AttributeRouting.Tests.Web.Areas.Api.Controllers
@@ -8,34 +10,47 @@ namespace AttributeRouting.Tests.Web.Areas.Api.Controllers
     {
         // GET /api/plain
         [GET("")]
-        public IEnumerable<string> GetAll()
+        public IEnumerable<string> All()
         {
             return new [] { "value1", "value2" };
         }
 
         // GET /api/plain/5
         [GET("{id}")]
-        public string Get(int id)
+        public string Single(int id)
         {
             return "value";
         }
 
         // POST /api/plain
         [POST("")]
-        public void Post()
+        public HttpResponseMessage Create()
         {
+            return new HttpResponseMessage(HttpStatusCode.Created);
         }
 
         // PUT /api/plain/5
         [PUT("{id}")]
-        public void Put(int id)
+        public HttpResponseMessage Update(int id)
         {
+            var response = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent("Updated " + id)
+            };
+
+            return response;
         }
 
         // DELETE /api/plain/5
         [DELETE("{id}")]
-        public void Delete(int id)
+        public HttpResponseMessage Destroy(int id)
         {
+            var response = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent("Deleted " + id)
+            };
+
+            return response;
         }
     }
 }

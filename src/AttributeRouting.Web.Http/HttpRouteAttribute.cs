@@ -1,6 +1,9 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
+using System.Web.Http.Controllers;
+using AttributeRouting.Helpers;
 
 namespace AttributeRouting.Web.Http
 {
@@ -8,7 +11,7 @@ namespace AttributeRouting.Web.Http
     /// The route information for an action.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-    public class HttpRouteAttribute : Attribute, IRouteAttribute
+    public class HttpRouteAttribute : Attribute, IRouteAttribute, IActionHttpMethodProvider
     {
         /// <summary>
         /// Specify the route information for an action.
@@ -97,5 +100,10 @@ namespace AttributeRouting.Web.Http
         public bool IgnoreRoutePrefix { get; set; }
         
         public bool IgnoreAreaUrl { get; set; }
+
+        Collection<HttpMethod> IActionHttpMethodProvider.HttpMethods
+        {
+            get { return new Collection<HttpMethod>(HttpMethods.Select(x => new HttpMethod(x)).ToList()); }
+        }
     }
 }

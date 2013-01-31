@@ -6,21 +6,27 @@ namespace AttributeRouting.Tests.Web.Areas.Api.Controllers
     public class ConstraintsController : BaseApiController
     {
         [GET("Int/{x:int}")]
-        public string GetInt(int x)
+        public string Int(int x)
         {
-            return x.ToString();
+            return "Int " + x;
         }
 
         [GET("IntOptional/{x:int?}")]
-        public string GetIntOptional(int? x)
+        public string IntOptional(int? x)
         {
-            return x.GetValueOrDefault(-1).ToString();
+            return "IntOptional " + x.GetValueOrDefault(-1);
         }
 
         [GET("IntDefault/{x:int=123}")]
-        public string GetIntDefault(int x)
+        public string IntDefault(int x)
         {
-            return x.ToString();
+            return "IntDefault " + x;
+        }
+
+        [GET("Query?{x:int}")]
+        public string Query(int x)
+        {
+            return "Query " + x;
         }
     }
 }
