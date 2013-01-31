@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web.Http;
 using AttributeRouting.Framework;
-using AttributeRouting.Web.Http.Framework;
+using HttpAttributeRoute = AttributeRouting.Web.Http.SelfHost.Framework.HttpAttributeRoute;
 
 namespace AttributeRouting.Web.Http.SelfHost
 {

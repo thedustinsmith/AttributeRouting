@@ -6,14 +6,14 @@ using System.Web.Http.Routing;
 using AttributeRouting.Framework;
 using AttributeRouting.Helpers;
 
-namespace AttributeRouting.Web.Http.Framework
+namespace AttributeRouting.Web.Http.SelfHost.Framework
 {
     /// <summary>
     /// Route to use for self-hosted Web API routes.
     /// </summary>
     public class HttpAttributeRoute : HttpRoute, IAttributeRoute
     {
-        private readonly HttpConfigurationBase _configuration;
+        private readonly HttpConfiguration _configuration;
 
         /// <summary>
         /// Route used by the AttributeRouting framework in self-host projects.
@@ -22,7 +22,7 @@ namespace AttributeRouting.Web.Http.Framework
                                   HttpRouteValueDictionary defaults,
                                   HttpRouteValueDictionary constraints,
                                   HttpRouteValueDictionary dataTokens,
-                                  HttpConfigurationBase configuration)
+                                  HttpConfiguration configuration)
             : base(url, defaults, constraints, dataTokens, configuration.MessageHandler)
         {
             _configuration = configuration;
@@ -75,17 +75,23 @@ namespace AttributeRouting.Web.Http.Framework
             // Let the underlying route match, and if it does, then add a few more constraints.
             var routeData = base.GetRouteData(virtualPathRoot, request);
             if (routeData == null)
+            {
                 return null;
+            }
 
             // Constrain by subdomain if configured
             var host = request.SafeGet(r => r.Headers.Host);
             if (!this.IsSubdomainMatched(host, _configuration))
+            {
                 return null;
+            }
 
             // Constrain by culture name if configured
             var currentUICultureName = _configuration.CurrentUICultureResolver(request, routeData); 
             if (!this.IsCultureNameMatched(currentUICultureName, _configuration))
+            {
                 return null;
+            }
 
             return routeData;
         }
@@ -95,7 +101,9 @@ namespace AttributeRouting.Web.Http.Framework
             // Let the underlying route do its thing, and if it does, then add some functionality on top.
             var virtualPathData = this.GetVirtualPath(() => base.GetVirtualPath(request, values));
             if (virtualPathData == null)
+            {
                 return null;
+            }
 
             // Translate this path if a translation is available.
             if (_configuration.TranslationProviders.Any())

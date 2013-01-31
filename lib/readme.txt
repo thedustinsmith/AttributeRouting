@@ -1,0 +1,1 @@
+These binaries are from my local aspnetwebstack build as I was modifying the source for my AR integration contrib.

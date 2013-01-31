@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading;
+using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Http.Routing;
+using System.Web.Routing;
 
 namespace AttributeRouting.Web.Http
 {
     public abstract class HttpConfigurationBase : ConfigurationBase
     {
-        protected HttpConfigurationBase()
-        {
-            CurrentUICultureResolver = (ctx, data) => Thread.CurrentThread.CurrentUICulture.Name;
-        }
-
         /// <summary>
         /// The message handler that will be the recipient of the request.
         /// </summary>
@@ -25,13 +22,6 @@ namespace AttributeRouting.Web.Http
         {
             get { return typeof(IHttpController); }
         }
-
-        /// <summary>
-        /// This delegate returns the current UI culture name,
-        /// which is used when constraining inbound routes by culture.
-        /// The default delegate returns the CurrentUICulture name of the current thread.
-        /// </summary>
-        public Func<HttpRequestMessage, IHttpRouteData, string> CurrentUICultureResolver { get; set; }
 
         /// <summary>
         /// Appends the routes from the specified controller type to the end of route collection.

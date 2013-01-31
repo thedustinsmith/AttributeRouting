@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Web;
 using System.Web.Routing;
 using AttributeRouting.Web.Http.WebHost.Framework.Factories;
 
@@ -12,11 +14,19 @@ namespace AttributeRouting.Web.Http.WebHost
             ParameterFactory = new RouteParameterFactory();
             RouteConstraintFactory = new RouteConstraintFactory(this);
 
+            CurrentUICultureResolver = (ctx, data) => Thread.CurrentThread.CurrentUICulture.Name;
             RouteHandlerFactory = () => null;
             RegisterDefaultInlineRouteConstraints<IRouteConstraint>(typeof(Web.Constraints.RegexRouteConstraint).Assembly);
         }
 
         public Func<IRouteHandler> RouteHandlerFactory { get; set; }
+
+        /// <summary>
+        /// This delegate returns the current UI culture name,
+        /// which is used when constraining inbound routes by culture.
+        /// The default delegate returns the CurrentUICulture name of the current thread.
+        /// </summary>
+        public Func<HttpContextBase, RouteData, string> CurrentUICultureResolver { get; set; }
 
         /// <summary>
         /// Specifies a function that returns an alternate route handler.
